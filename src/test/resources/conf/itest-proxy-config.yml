@@ -12,7 +12,7 @@ metricPrefix: "Server|Component:<TIER_ID>|Custom Metrics|AWS Kinesis Analytics|"
 accounts:
   - awsAccessKey: ""
     awsSecretKey: ""
-    displayAccountName: "AppD"
+    displayAccountName: ""
 
     # Regions where cloudwatch is registered
     # Allowed values: ap-southeast-1, ap-southeast-2, ap-northeast-1, eu-central-1,
