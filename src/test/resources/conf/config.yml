@@ -33,10 +33,10 @@ proxyConfig:
 dimensions:
    - name: "Flow"
      displayName: "Flow"
-     values: ["", ""]
+     values: [".*"]
    - name: "Id"
      displayName: "Id"
-     values: ["", ""]
+     values: [".*"]
 
 concurrencyConfig:
   noOfAccountThreads: 3
