@@ -90,8 +90,8 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "KPUs"
-         alias: "Kinesis Processing Units (count)"
-         statType: "ave (Unit: count, StatType: ave)"
+         alias: "Kinesis Processing Units (Unit: count, StatType: ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
