@@ -122,7 +122,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "InputProcessing.Duration"
-         alias: "InputProcessing Duration (Unit: ,StatType: ave) "
+         alias: "InputProcessing Duration (Unit - ms,StatType - ave) "
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -186,7 +186,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "LambdaDelivery.Duration"
-         alias: "LambdaDelivery.Duration (Unit - ; StatType - ave)"
+         alias: "LambdaDelivery.Duration (Unit - ms; StatType - ave)"
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
