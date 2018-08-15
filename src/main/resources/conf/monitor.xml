@@ -14,7 +14,8 @@
   -->
 
 <monitor>
-    <name>AWS Kinesis Analytics</name>
+    <!-- TODO for all ext change name -->
+    <name>AWS Kinesis Analytics Monitor</name>
     <type>managed</type>
     <description>AWS Kinesis Analytics Monitoring Extension</description>
     <monitor-configuration></monitor-configuration>
@@ -26,9 +27,10 @@
         <description>AWS Kinesis Analytics Task</description>
         <type>java</type>
         <execution-timeout-in-secs>60</execution-timeout-in-secs>
+        <!-- TODO folder name -->
         <task-arguments>
             <argument name="config-file" is-required="true" default-value=
-                    "monitors/AWSKinesisAnalyticsMonitoringExtension/config.yml" />
+                    "monitors/AWSKinesisAnalyticsMonitor/config.yml" />
         </task-arguments>
         <java-task>
             <classpath>aws-kinesis-analytics-monitoring-extension.jar</classpath>

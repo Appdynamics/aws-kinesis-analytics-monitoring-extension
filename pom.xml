@@ -126,13 +126,13 @@
                                     <fileset dir="src/main/resources/conf" includes="monitor.xml,config.yml"/>
                                     <fileset dir="${project.basedir}" includes="LICENSE.txt"/>
                                     <fileset dir="${project.basedir}" includes="NOTICE.txt"/>
-
+<!--TODO change name-->
                                 </copy>
                                 <copy todir="${target.dir}">
                                     <fileset dir="${project.build.directory}" includes="${project.artifactId}.${project.packaging}"/>
                                 </copy>
                                 <zip destfile="${target.dir}-${project.version}.zip">
-                                    <zipfileset dir="${target.dir}" filemode="755" prefix="AWSKinesisAnalyticsMonitoringExtension"/>
+                                    <zipfileset dir="${target.dir}" filemode="755" prefix="AWSKinesisAnalyticsMonitor"/>
                                 </zip>
                                 <delete dir="${target.dir}"/>
                             </target>

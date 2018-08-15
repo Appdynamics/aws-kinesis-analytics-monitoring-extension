@@ -39,7 +39,8 @@ import java.util.concurrent.atomic.LongAdder;
  */
 public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
 
-    private static final Logger LOGGER = Logger.getLogger(KinesisAnalyticsMetricsProcessor.class);
+    // private static final Logger LOGGER = Logger.getLogger(KinesisAnalyticsMetricsProcessor.class);
+    // TODo move namespace to constants
     private static final String NAMESPACE = "AWS/KinesisAnalytics";
     private List<IncludeMetric> includeMetrics;
     private List<Dimension> dimensions;
@@ -64,6 +65,7 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
 
     @Override
     public List<Metric> createMetricStatsMapForUpload(NamespaceMetricStatistics namespaceMetricStats) {
+        // change metricPath hierarchy TODO
         Map<String, String> dimensionToMetricPathNameDictionary = new HashMap<>();
         for (Dimension dimension : dimensions) {
             dimensionToMetricPathNameDictionary.put(dimension.getName(), dimension.getDisplayName());

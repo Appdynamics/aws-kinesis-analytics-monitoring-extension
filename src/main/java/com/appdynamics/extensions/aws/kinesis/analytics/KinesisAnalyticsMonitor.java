@@ -32,7 +32,7 @@ public class KinesisAnalyticsMonitor extends SingleNamespaceCloudwatchMonitor<Co
 
     public KinesisAnalyticsMonitor() {
         super(Configuration.class);
-        LOGGER.info(String.format("Using AWS KinesisAnalyticsMonitor Monitor Version [%s]",
+        LOGGER.info(String.format("Using AWS Kinesis Analytics Monitor Version [%s]",
                 this.getClass().getPackage().getImplementationTitle()));
     }
 

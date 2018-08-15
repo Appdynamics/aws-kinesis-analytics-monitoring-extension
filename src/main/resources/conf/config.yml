@@ -49,6 +49,9 @@ concurrencyConfig:
 # Basic will fire CloudWatch API calls every 5 minutes
 # Detailed will fire CloudWatch API calls every 1 minutes
 cloudWatchMonitoring: "Basic"
+# todo cloudwatchmonitoringinterval
+
+# check api-gateway for cloudwatch interval
 
 regionEndPoints:
   us-east-1 : monitoring.us-east-1.amazonaws.com
@@ -82,6 +85,7 @@ metricsConfig:
     # Observed value to the Controller
     includeMetrics:
        - name: "Bytes"
+       # change alias
          alias: "Bytes (Unit - byte; StatType - sum)"
          statType: "sum"
          aggregationType: "AVERAGE"
@@ -89,6 +93,7 @@ metricsConfig:
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
+         # todo check if you can add one more metric
        - name: "KPUs"
          alias: "Kinesis Processing Units (Unit - count; StatType - ave)"
          statType: "ave"

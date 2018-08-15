@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class KinesisAnalyticsMonitorITest {
 
     private final KinesisAnalyticsMonitor classUnderTest = new KinesisAnalyticsMonitor();
-
+    //TODO check lambda extension unit test
     @Test
     public void testMetricsCollectionCredentialsEncrypted() throws Exception {
         Map<String, String> args = new HashMap<>();
