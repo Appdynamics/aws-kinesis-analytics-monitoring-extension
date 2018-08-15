@@ -19,7 +19,7 @@ package com.appdynamics.extensions.aws.kinesis.analytics.util;
  * Created by pradeep.nair on 8/3/18.
  * Stores defaults that are used throughout the project
  */
-public class Constants {
-    public static final String DEFAULT_METRIC_PREFIX = "Custom Metrics|Kinesis Data Analytics|";
+public final class Constants {
+    public static final String DEFAULT_METRIC_PREFIX = "Custom Metrics|AWS Kinesis Analytics|";
     public static final String MONITOR_NAME = "KinesisDataAnalyticsMonitor";
 }

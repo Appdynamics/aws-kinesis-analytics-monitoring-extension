@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class KinesisAnalyticsMonitorITest {
 
-    private KinesisAnalyticsMonitor classUnderTest = new KinesisAnalyticsMonitor();
+    private final KinesisAnalyticsMonitor classUnderTest = new KinesisAnalyticsMonitor();
 
     @Test
     public void testMetricsCollectionCredentialsEncrypted() throws Exception {

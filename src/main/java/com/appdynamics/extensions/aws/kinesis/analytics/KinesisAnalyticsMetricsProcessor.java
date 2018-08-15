@@ -40,7 +40,6 @@ import java.util.concurrent.atomic.LongAdder;
 public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
 
     private static final Logger LOGGER = Logger.getLogger(KinesisAnalyticsMetricsProcessor.class);
-
     private static final String NAMESPACE = "AWS/KinesisAnalytics";
     private List<IncludeMetric> includeMetrics;
     private List<Dimension> dimensions;

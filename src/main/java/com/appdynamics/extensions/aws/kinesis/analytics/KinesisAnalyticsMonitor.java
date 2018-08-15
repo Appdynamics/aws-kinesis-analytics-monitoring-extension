@@ -19,14 +19,7 @@ import com.appdynamics.extensions.aws.SingleNamespaceCloudwatchMonitor;
 import com.appdynamics.extensions.aws.collectors.NamespaceMetricStatisticsCollector;
 import com.appdynamics.extensions.aws.config.Configuration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-
-import java.io.OutputStreamWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.appdynamics.extensions.aws.kinesis.analytics.util.Constants.*;
 
@@ -79,18 +72,5 @@ public class KinesisAnalyticsMonitor extends SingleNamespaceCloudwatchMonitor<Co
     private MetricsProcessor createMetricsProcessor(Configuration config) {
         return new KinesisAnalyticsMetricsProcessor(config.getMetricsConfig().getIncludeMetrics(),
                 config.getDimensions());
-    }
-
-    public static void main(String[] args) throws Exception{
-        ConsoleAppender ca = new ConsoleAppender();
-        ca.setWriter(new OutputStreamWriter(System.out));
-        ca.setLayout(new PatternLayout("%-5p [%t]: %m%n"));
-        ca.setThreshold(Level.DEBUG);
-        org.apache.log4j.Logger.getRootLogger().addAppender(ca);
-        KinesisAnalyticsMonitor monitor = new KinesisAnalyticsMonitor();
-        Map<String, String> taskArgs = new HashMap<>();
-        taskArgs.put("config-file",
-                "src/main/resources/conf/config.yml");
-        monitor.execute(taskArgs, null);
     }
 }
