@@ -45,10 +45,13 @@ concurrencyConfig:
   #Thread timeout in seconds
   threadTimeOut: 30
 
-#Allowed values are Basic and Detailed. Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information
+# Allowed values are Basic and Detailed. Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information
 # Basic will fire CloudWatch API calls every 5 minutes
 # Detailed will fire CloudWatch API calls every 1 minutes
 cloudWatchMonitoring: "Basic"
+# If you want to run the extension with a further delay, comment the "cloudWatchMonitoring" above and use the following field
+# which takes in the number of minutes after which the extension should call the cloudwatch metrics
+#cloudWatchMonitoringInterval: 10
 
 regionEndPoints:
   us-east-1 : monitoring.us-east-1.amazonaws.com
@@ -82,7 +85,7 @@ metricsConfig:
     # Observed value to the Controller
     includeMetrics:
        - name: "Bytes"
-         alias: "Bytes (Unit - byte; StatType - sum)"
+         alias: "Bytes per minute (Unit - byte; StatType - sum)"
          statType: "sum"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -101,12 +104,12 @@ metricsConfig:
          alias: "Millis Behind Latest (Unit - ms; StatType - max)"
          statType: "max"
          aggregationType: "AVERAGE"
-         timeRollUpType: "AVERAGE"
+         timeRollUpType: "CURRENT"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "Records"
-         alias: "Records (Unit - count; StatType - sum)"
+         alias: "Records per minute (Unit - count; StatType - sum)"
          statType: "sum"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -122,7 +125,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "InputProcessing.Duration"
-         alias: "InputProcessing Duration (Unit - ms,StatType - ave) "
+         alias: "InputProcessing Duration (Unit- ms;StatType- ave) "
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -130,32 +133,32 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "InputProcessing.OkRecords"
-         alias: "InputProcessing OkRecords (Unit - count; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing OkRecords (Unit - count; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "InputProcessing.OkBytes"
-         alias: "InputProcessing OkBytes (Unit - byte; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing OkBytes (Unit - byte; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "InputProcessing.DroppedRecords"
-         alias: "InputProcessing DroppedRecords (Unit - count; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing DroppedRecords (Unit - count; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "InputProcessing.ProcessingFailedRecords"
-         alias: "InputProcessing ProcessingFailedRecords (Unit - count; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing ProcessingFailedRecords (Unit - count; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
@@ -170,7 +173,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "LambdaDelivery.OkRecords"
-         alias: "LambdaDelivery OkRecords (Unit - count; StatType - sum)"
+         alias: "LambdaDelivery OkRecords (Unit - count; StatType - ave)"
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -178,7 +181,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "LambdaDelivery.DeliveryFailedRecords"
-         alias: "LambdaDelivery DeliveryFailedRecords (Unit - count; StatType - sum)"
+         alias: "LambdaDelivery DeliveryFailedRecords (Unit - count; StatType - ave)"
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"

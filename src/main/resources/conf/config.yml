@@ -83,7 +83,6 @@ metricsConfig:
     #
     # Note: Irrespective of the metric type, value will still be reported as
     # Observed value to the Controller
-    #TODO alias check
     includeMetrics:
        - name: "Bytes"
          alias: "Bytes per minute (Unit - byte; StatType - sum)"
@@ -105,12 +104,12 @@ metricsConfig:
          alias: "Millis Behind Latest (Unit - ms; StatType - max)"
          statType: "max"
          aggregationType: "AVERAGE"
-         timeRollUpType: "AVERAGE"
+         timeRollUpType: "CURRENT"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "Records"
-         alias: "Records (Unit - count; StatType - sum)"
+         alias: "Records per minute (Unit - count; StatType - sum)"
          statType: "sum"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -134,32 +133,32 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "InputProcessing.OkRecords"
-         alias: "InputProcessing OkRecords (Unit - count; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing OkRecords (Unit - count; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "InputProcessing.OkBytes"
-         alias: "InputProcessing OkBytes (Unit - byte; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing OkBytes (Unit - byte; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "InputProcessing.DroppedRecords"
-         alias: "InputProcessing DroppedRecords (Unit - count; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing DroppedRecords (Unit - count; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
        - name: "InputProcessing.ProcessingFailedRecords"
-         alias: "InputProcessing ProcessingFailedRecords (Unit - count; StatType - sum)"
-         statType: "sum"
+         alias: "InputProcessing ProcessingFailedRecords (Unit - count; StatType - ave)"
+         statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
@@ -174,7 +173,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "LambdaDelivery.OkRecords"
-         alias: "LambdaDelivery OkRecords (Unit - count; StatType - sum)"
+         alias: "LambdaDelivery OkRecords (Unit - count; StatType - ave)"
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
@@ -182,7 +181,7 @@ metricsConfig:
          delta: false
          multiplier: 1
        - name: "LambdaDelivery.DeliveryFailedRecords"
-         alias: "LambdaDelivery DeliveryFailedRecords (Unit - count; StatType - sum)"
+         alias: "LambdaDelivery DeliveryFailedRecords (Unit - count; StatType - ave)"
          statType: "ave"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"

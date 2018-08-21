@@ -25,6 +25,7 @@ import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessorHelper;
 import com.appdynamics.extensions.aws.predicate.MultiDimensionPredicate;
 import com.appdynamics.extensions.metrics.Metric;
+import com.appdynamics.extensions.util.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -147,15 +148,21 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
      */
     private static void arrangeMetricPathHierarchy(StringBuilder partialMetricPath, Map<String, String> dimensionDisplayNameMap,
                                                    Map<String, String> dimensionValueMap) {
+        String applicationDimensionName = "Application";
+        String applicationDimensionDispName = dimensionDisplayNameMap.get(applicationDimensionName);
+        String flowDimensionName = "Flow";
+        String idDimensionName = "Id";
+        String idDimensionDispName = dimensionDisplayNameMap.get(idDimensionName);
+        if (!StringUtils.hasText(applicationDimensionDispName)) applicationDimensionDispName = applicationDimensionName;
+        if (!StringUtils.hasText(idDimensionDispName)) idDimensionDispName = idDimensionName;
         // <Account>|<Region|>Application|<application_name>
-        buildMetricPath(partialMetricPath, true, dimensionDisplayNameMap.get("Application"),
-                dimensionValueMap.get("Application"));
+        buildMetricPath(partialMetricPath, true, applicationDimensionDispName,
+                dimensionValueMap.get(applicationDimensionName));
         // <Account>|<Region|>Application|<application_name>|<flow_type>
-        if (dimensionValueMap.get("Flow") != null)
-            buildMetricPath(partialMetricPath, true, dimensionValueMap.get("Flow"));
+        if (dimensionValueMap.get(flowDimensionName) != null)
+            buildMetricPath(partialMetricPath, true, dimensionValueMap.get(flowDimensionName));
         // <Account>|<Region|>Application|<application_name>|<flow_type>|Id|<id>
-        if (dimensionValueMap.get("Id") != null)
-            buildMetricPath(partialMetricPath, true, dimensionDisplayNameMap.get("Id"),
-                    dimensionValueMap.get("Id"));
+        if (dimensionValueMap.get(idDimensionName) != null)
+            buildMetricPath(partialMetricPath, true, idDimensionDispName, dimensionValueMap.get(idDimensionName));
     }
 }
