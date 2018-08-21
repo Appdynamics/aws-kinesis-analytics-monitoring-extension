@@ -23,11 +23,12 @@
     <artifactId>aws-kinesis-analytics-monitoring-extension</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>AWS Kinesis Analytics Monitoring Extension</name>
+    <name>AWS Kinesis Analytics Monitor</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-        <target.dir>${project.build.directory}/aws-kinesis-analytics-monitoring-extension</target.dir>
+        <target.name>AWSKinesisAnalyticsMonitor</target.name>
+        <target.dir>${project.build.directory}/${target.name}</target.dir>
     </properties>
 
     <dependencies>
@@ -126,13 +127,12 @@
                                     <fileset dir="src/main/resources/conf" includes="monitor.xml,config.yml"/>
                                     <fileset dir="${project.basedir}" includes="LICENSE.txt"/>
                                     <fileset dir="${project.basedir}" includes="NOTICE.txt"/>
-<!--TODO change name-->
                                 </copy>
                                 <copy todir="${target.dir}">
                                     <fileset dir="${project.build.directory}" includes="${project.artifactId}.${project.packaging}"/>
                                 </copy>
                                 <zip destfile="${target.dir}-${project.version}.zip">
-                                    <zipfileset dir="${target.dir}" filemode="755" prefix="AWSKinesisAnalyticsMonitor"/>
+                                    <zipfileset dir="${target.dir}" filemode="755" prefix="${target.name}"/>
                                 </zip>
                                 <delete dir="${target.dir}"/>
                             </target>

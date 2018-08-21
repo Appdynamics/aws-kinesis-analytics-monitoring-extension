@@ -45,13 +45,13 @@ concurrencyConfig:
   #Thread timeout in seconds
   threadTimeOut: 30
 
-#Allowed values are Basic and Detailed. Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information
+# Allowed values are Basic and Detailed. Refer https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html for more information
 # Basic will fire CloudWatch API calls every 5 minutes
 # Detailed will fire CloudWatch API calls every 1 minutes
 cloudWatchMonitoring: "Basic"
-# todo cloudwatchmonitoringinterval
-
-# check api-gateway for cloudwatch interval
+# If you want to run the extension with a further delay, comment the "cloudWatchMonitoring" above and use the following field
+# which takes in the number of minutes after which the extension should call the cloudwatch metrics
+#cloudWatchMonitoringInterval: 10
 
 regionEndPoints:
   us-east-1 : monitoring.us-east-1.amazonaws.com
@@ -83,17 +83,16 @@ metricsConfig:
     #
     # Note: Irrespective of the metric type, value will still be reported as
     # Observed value to the Controller
+    #TODO alias check
     includeMetrics:
        - name: "Bytes"
-       # change alias
-         alias: "Bytes (Unit - byte; StatType - sum)"
+         alias: "Bytes per minute (Unit - byte; StatType - sum)"
          statType: "sum"
          aggregationType: "AVERAGE"
          timeRollUpType: "AVERAGE"
          clusterRollUpType: "INDIVIDUAL"
          delta: false
          multiplier: 1
-         # todo check if you can add one more metric
        - name: "KPUs"
          alias: "Kinesis Processing Units (Unit - count; StatType - ave)"
          statType: "ave"

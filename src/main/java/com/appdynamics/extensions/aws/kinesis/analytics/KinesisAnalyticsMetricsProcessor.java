@@ -20,8 +20,7 @@ import com.amazonaws.services.cloudwatch.model.DimensionFilter;
 import com.appdynamics.extensions.aws.config.Dimension;
 import com.appdynamics.extensions.aws.config.IncludeMetric;
 import com.appdynamics.extensions.aws.dto.AWSMetric;
-import com.appdynamics.extensions.aws.metric.NamespaceMetricStatistics;
-import com.appdynamics.extensions.aws.metric.StatisticType;
+import com.appdynamics.extensions.aws.metric.*;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessorHelper;
 import com.appdynamics.extensions.aws.predicate.MultiDimensionPredicate;
@@ -34,14 +33,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.LongAdder;
 
+import static com.appdynamics.extensions.aws.Constants.METRIC_PATH_SEPARATOR;
+import static com.appdynamics.extensions.aws.kinesis.analytics.util.Constants.NAMESPACE;
+
 /**
  * Created by pradeep.nair on 8/3/18.
  */
 public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
 
-    // private static final Logger LOGGER = Logger.getLogger(KinesisAnalyticsMetricsProcessor.class);
-    // TODo move namespace to constants
-    private static final String NAMESPACE = "AWS/KinesisAnalytics";
+    private static final Logger LOGGER = Logger.getLogger(KinesisAnalyticsMetricsProcessor.class);
     private List<IncludeMetric> includeMetrics;
     private List<Dimension> dimensions;
 
@@ -51,10 +51,11 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
     }
 
     @Override
-    public List<AWSMetric> getMetrics(AmazonCloudWatch awsCloudWatch, String accountName, LongAdder awsRequestsCounter) {
+    public List<AWSMetric> getMetrics(AmazonCloudWatch awsCloudWatch, String accountName, LongAdder
+            awsRequestsCounter) {
         List<DimensionFilter> dimensionFilters = getDimensionFilters();
         MultiDimensionPredicate multiDimensionPredicate = new MultiDimensionPredicate(dimensions);
-        return  MetricsProcessorHelper.getFilteredMetrics(awsCloudWatch, awsRequestsCounter, NAMESPACE,
+        return MetricsProcessorHelper.getFilteredMetrics(awsCloudWatch, awsRequestsCounter, NAMESPACE,
                 includeMetrics, dimensionFilters, multiDimensionPredicate);
     }
 
@@ -65,13 +66,46 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
 
     @Override
     public List<Metric> createMetricStatsMapForUpload(NamespaceMetricStatistics namespaceMetricStats) {
-        // change metricPath hierarchy TODO
-        Map<String, String> dimensionToMetricPathNameDictionary = new HashMap<>();
-        for (Dimension dimension : dimensions) {
-            dimensionToMetricPathNameDictionary.put(dimension.getName(), dimension.getDisplayName());
+        List<Metric> stats = new ArrayList<>();
+        Map<String, String> dimensionDisplayNameMap = new HashMap<>();
+        for (Dimension dimension : dimensions) dimensionDisplayNameMap.put(dimension.getName(), dimension.getDisplayName());
+        if (namespaceMetricStats != null) {
+            for (AccountMetricStatistics accountMetricStats : namespaceMetricStats.getAccountMetricStatisticsList()) {
+                String accountPrefix = accountMetricStats.getAccountName();
+                for (RegionMetricStatistics regionMetricStats : accountMetricStats.getRegionMetricStatisticsList()) {
+                    String regionPrefix = regionMetricStats.getRegion();
+                    for (MetricStatistic metricStats : regionMetricStats.getMetricStatisticsList()) {
+                        Map<String, String> dimensionValueMap = new HashMap<>();
+                        for (com.amazonaws.services.cloudwatch.model.Dimension dimension :
+                                metricStats.getMetric().getMetric().getDimensions())
+                            dimensionValueMap.put(dimension.getName(), dimension.getValue());
+                        StringBuilder partialMetricPath = new StringBuilder();
+                        buildMetricPath(partialMetricPath, true, accountPrefix, regionPrefix);
+                        // reconstruct the metric hierarchy
+                        arrangeMetricPathHierarchy(partialMetricPath, dimensionDisplayNameMap, dimensionValueMap);
+                        String awsMetricName = metricStats.getMetric().getIncludeMetric().getName();
+                        buildMetricPath(partialMetricPath, false, awsMetricName);
+                        String fullMetricPath = metricStats.getMetricPrefix() + partialMetricPath;
+                        if (metricStats.getValue() != null) {
+                            Map<String, Object> metricProperties = new HashMap<>();
+                            IncludeMetric metricWithConfig = metricStats.getMetric().getIncludeMetric();
+                            metricProperties.put("alias", metricWithConfig.getAlias());
+                            metricProperties.put("multiplier", metricWithConfig.getMultiplier());
+                            metricProperties.put("aggregationType", metricWithConfig.getAggregationType());
+                            metricProperties.put("timeRollUpType", metricWithConfig.getTimeRollUpType());
+                            metricProperties.put("clusterRollUpType", metricWithConfig.getClusterRollUpType());
+                            metricProperties.put("delta", metricWithConfig.isDelta());
+                            Metric metric = new Metric(awsMetricName, Double.toString(metricStats.getValue()),
+                                    fullMetricPath, metricProperties);
+                            stats.add(metric);
+                        } else {
+                            LOGGER.debug(String.format("Ignoring metric [ %s ] which has value null", fullMetricPath));
+                        }
+                    }
+                }
+            }
         }
-        return MetricsProcessorHelper.createMetricStatsMapForUpload(namespaceMetricStats,
-                dimensionToMetricPathNameDictionary, false);
+        return stats;
     }
 
     @Override
@@ -87,5 +121,41 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
             dimensionFilters.add(dimensionFilter);
         }
         return dimensionFilters;
+    }
+
+    /**
+     * Builds the metric path, if {@code addSeparator} is {@code true} then the metric separator will be inseted
+     * after each suffix.
+     *
+     * @param partialMetricPath Current {@code partialMetricPath}
+     * @param addSeparator         Add metric addSeparator between each suffixes if {@code true}
+     * @param suffixes            Value to be appended to {@code partialMetricPath}
+     */
+    private static void buildMetricPath(StringBuilder partialMetricPath, boolean addSeparator, String... suffixes) {
+        for (String suffix : suffixes) {
+            partialMetricPath.append(suffix);
+            if (addSeparator) partialMetricPath.append(METRIC_PATH_SEPARATOR);
+        }
+    }
+
+    /**
+     * Arrange the metric path hierarchy to look like
+     * {@code <Account>|<Region>|Application|<application_name>|<flow_type>|Id|<id>}
+     * @param partialMetricPath         current metric path
+     * @param dimensionDisplayNameMap   Dimension display name Map
+     * @param dimensionValueMap         Dimension value Map
+     */
+    private static void arrangeMetricPathHierarchy(StringBuilder partialMetricPath, Map<String, String> dimensionDisplayNameMap,
+                                                   Map<String, String> dimensionValueMap) {
+        // <Account>|<Region|>Application|<application_name>
+        buildMetricPath(partialMetricPath, true, dimensionDisplayNameMap.get("Application"),
+                dimensionValueMap.get("Application"));
+        // <Account>|<Region|>Application|<application_name>|<flow_type>
+        if (dimensionValueMap.get("Flow") != null)
+            buildMetricPath(partialMetricPath, true, dimensionValueMap.get("Flow"));
+        // <Account>|<Region|>Application|<application_name>|<flow_type>|Id|<id>
+        if (dimensionValueMap.get("Id") != null)
+            buildMetricPath(partialMetricPath, true, dimensionDisplayNameMap.get("Id"),
+                    dimensionValueMap.get("Id"));
     }
 }

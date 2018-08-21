@@ -14,20 +14,18 @@
   -->
 
 <monitor>
-    <!-- TODO for all ext change name -->
     <name>AWS Kinesis Analytics Monitor</name>
     <type>managed</type>
-    <description>AWS Kinesis Analytics Monitoring Extension</description>
+    <description>Monitors AWS Kinesis Analytics</description>
     <monitor-configuration></monitor-configuration>
     <monitor-run-task>
         <execution-style>periodic</execution-style>
         <execution-frequency-in-seconds>60</execution-frequency-in-seconds>
         <name>AWS Kinesis Analytics Monitor Run Task</name>
-        <display-name>AWS Kinesis Analytics Task</display-name>
-        <description>AWS Kinesis Analytics Task</description>
+        <display-name>AWS Kinesis Analytics Monitor Run Task</display-name>
+        <description>AWS Kinesis Analytics Monitor Run Task</description>
         <type>java</type>
         <execution-timeout-in-secs>60</execution-timeout-in-secs>
-        <!-- TODO folder name -->
         <task-arguments>
             <argument name="config-file" is-required="true" default-value=
                     "monitors/AWSKinesisAnalyticsMonitor/config.yml" />

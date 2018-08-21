@@ -22,4 +22,5 @@ package com.appdynamics.extensions.aws.kinesis.analytics.util;
 public final class Constants {
     public static final String DEFAULT_METRIC_PREFIX = "Custom Metrics|AWS Kinesis Analytics|";
     public static final String MONITOR_NAME = "KinesisDataAnalyticsMonitor";
+    public static final String NAMESPACE = "AWS/KinesisAnalytics";
 }
