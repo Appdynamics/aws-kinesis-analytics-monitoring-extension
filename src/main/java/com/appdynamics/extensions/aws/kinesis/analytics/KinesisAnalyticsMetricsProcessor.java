@@ -69,7 +69,8 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
     public List<Metric> createMetricStatsMapForUpload(NamespaceMetricStatistics namespaceMetricStats) {
         List<Metric> stats = new ArrayList<>();
         Map<String, String> dimensionDisplayNameMap = new HashMap<>();
-        for (Dimension dimension : dimensions) dimensionDisplayNameMap.put(dimension.getName(), dimension.getDisplayName());
+        for (Dimension dimension : dimensions)
+            dimensionDisplayNameMap.put(dimension.getName(), dimension.getDisplayName());
         if (namespaceMetricStats != null) {
             for (AccountMetricStatistics accountMetricStats : namespaceMetricStats.getAccountMetricStatisticsList()) {
                 String accountPrefix = accountMetricStats.getAccountName();
@@ -155,13 +156,13 @@ public class KinesisAnalyticsMetricsProcessor implements MetricsProcessor {
         String idDimensionDispName = dimensionDisplayNameMap.get(idDimensionName);
         if (!StringUtils.hasText(applicationDimensionDispName)) applicationDimensionDispName = applicationDimensionName;
         if (!StringUtils.hasText(idDimensionDispName)) idDimensionDispName = idDimensionName;
-        // <Account>|<Region|>Application|<application_name>
+        // <Account>|<Region>|Application|<application_name>
         buildMetricPath(partialMetricPath, true, applicationDimensionDispName,
                 dimensionValueMap.get(applicationDimensionName));
-        // <Account>|<Region|>Application|<application_name>|<flow_type>
+        // <Account>|<Region>|Application|<application_name>|<flow_type>
         if (dimensionValueMap.get(flowDimensionName) != null)
             buildMetricPath(partialMetricPath, true, dimensionValueMap.get(flowDimensionName));
-        // <Account>|<Region|>Application|<application_name>|<flow_type>|Id|<id>
+        // <Account>|<Region>|Application|<application_name>|<flow_type>|Id|<id>
         if (dimensionValueMap.get(idDimensionName) != null)
             buildMetricPath(partialMetricPath, true, idDimensionDispName, dimensionValueMap.get(idDimensionName));
     }
