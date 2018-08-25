@@ -10,7 +10,7 @@ Captures statistics for Amazon Kinesis Analytics from Amazon CloudWatch and disp
     cloudwatch:GetMetricStatistics
     ```
 2. In order to use this extension, you do need a [Standalone JAVA Machine Agent](https://docs.appdynamics.com/display/PRO44/Standalone+Machine+Agents) or [SIM Agent](https://docs.appdynamics.com/display/PRO44/Server+Visibility).  For more details on downloading these products, please  visit [here](https://download.appdynamics.com/).
-3. The extension needs to be able to connect to AWS Cloudwatch in order to collect and send metrics. To do this, you will have to either establish a remote connection in between the extension and the product using access key and secret key, or have an agent running on EC2 instance with instance profile.
+3. The extension needs to be able to connect to AWS Cloudwatch in order to collect and send metrics. To do this, you will have to either establish a remote connection in between the extension and the product using access key and secret key, or have an agent running on EC2 instance, which you can use with instance profile.
 
 ## Installation
 1. Run `mvn clean install` from `aws-kinesis-analytics-monitoring-extension`
@@ -35,8 +35,8 @@ In order to use the extension, you need to update the config.yml file that is pr
     metricPrefix: "Server|Component:100|Custom Metrics|AWS Kinesis Analytics|"
     ```
 
-2. Provide accessKey(required) and secretKey(required) of your account(s), also provide displayAccountName(any name that represents your account) and
-   regions(required). If you are running this extension inside an EC2 instance which has IAM profile configured then you don't have to configure accessKey and  secretKey values, extension will use IAM profile to authenticate. You can provide multiple accounts and regions as below - 
+2. Provide **accessKey**(required) and **secretKey**(required) of your account(s), also provide **displayAccountName**(any name that represents your account) and
+   **regions**(required). If you are running this extension inside an EC2 instance which has **IAM profile** configured then you don't have to configure **accessKey** and  **secretKey** values, extension will use **IAM profile** to authenticate. You can provide multiple accounts and regions as below - 
    ~~~
    accounts:
      - awsAccessKey: "XXXXXXXX1"
@@ -49,7 +49,7 @@ In order to use the extension, you need to update the config.yml file that is pr
        displayAccountName: "TestAccount_2"
        regions: ["eu-central-1","eu-west-1"]
    ~~~
-3. If you want to encrypt the "awsAccessKey" and "awsSecretKey" then follow the "Credentials Encryption" section and provide the encrypted values in "awsAccessKey" and "awsSecretKey". Configure "enableDecryption" of "credentialsDecryptionConfig" to true and provide the encryption key in "encryptionKey"
+3. If you want to encrypt the **awsAccessKey** and **awsSecretKey** then follow the "Credentials Encryption" section and provide the encrypted values in **awsAccessKey** and **awsSecretKey**. Configure `enableDecryption` of `credentialsDecryptionConfig` to `true` and provide the encryption key in `encryptionKey`.
    For example,
    ```
    #Encryption key for Encrypted password.
@@ -101,7 +101,7 @@ In order to use the extension, you need to update the config.yml file that is pr
    
    **All these metric properties are optional, and the default value shown in the table is applied to the metric(if a property has not been specified) by default.**
 
-### config.yml
+### Config.yml
 Please avoid using tab (\t) when editing yaml files. Please copy all the contents of the config.yml file and go to [Yaml Validator](http://www.yamllint.com/) . On reaching the website, paste the contents and press the “Go” button on the bottom left.                                                       
 If you get a valid output, that means your formatting is correct and you may move on to the next step.
 
