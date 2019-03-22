@@ -21,7 +21,7 @@
 
     <groupId>com.appdynamics.extensions</groupId>
     <artifactId>aws-kinesis-analytics-monitoring-extension</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>AWS Kinesis Analytics Monitor</name>
     <properties>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.appdynamics.extensions</groupId>
             <artifactId>aws-cloudwatch-exts-commons</artifactId>
-            <version>2.0.1</version>
+            <version>2.0.1.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
