@@ -21,6 +21,10 @@ import com.appdynamics.extensions.aws.config.Configuration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import static com.appdynamics.extensions.aws.kinesis.analytics.util.Constants.*;
 
 /**
@@ -65,8 +69,8 @@ public class KinesisAnalyticsMonitor extends SingleNamespaceCloudwatchMonitor<Co
     }
 
     @Override
-    protected int getTaskCount() {
-        return 3;
+    protected List<Map<String, ?>> getServers() {
+        return new ArrayList<Map<String, ?>>();
     }
 
     private MetricsProcessor createMetricsProcessor(Configuration config) {
