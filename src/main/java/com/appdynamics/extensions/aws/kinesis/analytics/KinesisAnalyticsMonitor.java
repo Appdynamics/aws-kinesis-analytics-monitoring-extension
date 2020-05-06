@@ -19,7 +19,8 @@ import com.appdynamics.extensions.aws.SingleNamespaceCloudwatchMonitor;
 import com.appdynamics.extensions.aws.collectors.NamespaceMetricStatisticsCollector;
 import com.appdynamics.extensions.aws.config.Configuration;
 import com.appdynamics.extensions.aws.metric.processors.MetricsProcessor;
-import org.apache.log4j.Logger;
+import com.appdynamics.extensions.logging.ExtensionsLoggerFactory;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import static com.appdynamics.extensions.aws.kinesis.analytics.util.Constants.*;
  */
 public class KinesisAnalyticsMonitor extends SingleNamespaceCloudwatchMonitor<Configuration> {
 
-    private static final Logger LOGGER = Logger.getLogger(KinesisAnalyticsMonitor.class);
+    private static final Logger LOGGER = ExtensionsLoggerFactory.getLogger(KinesisAnalyticsMonitor.class);
 
     public KinesisAnalyticsMonitor() {
         super(Configuration.class);
